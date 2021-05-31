@@ -917,12 +917,7 @@ exports.asCURL = function(item) {
     result.push(['-H', JSON.stringify((rawHeaderNames[key] || key) + ': ' + headers[key])]);
   });
   var body = (isText(req.headers) || isUrlEncoded(req)) ? getBody(req, true) : '';
-  try {
-    body = JSON.parse(body);
-  } catch (error) {}
-  if (body) {
-    result.push(['-d', '\'' + JSON.stringify(body, null, 2) + '\'']);
-  }
+  body && result.push(['-d', JSON.stringify(body)]);
   return result.map(function(item) {return item.join(' ');}).join(' \\\n');
 };
 
